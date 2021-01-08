@@ -2,8 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const { dbConnection } = require('../database/config');
-
 const cors = require('cors');
+
+const path = require('path');
 
 // Crear el servidor de express
 const app = express();
@@ -16,6 +17,9 @@ app.use(express.json());
 
 // Conexion a la base de datos.
 dbConnection();
+
+// Directorio Publico
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 // Ruta usuario
 app.use('/api/usuarios', require('../routes/usuarios'));
