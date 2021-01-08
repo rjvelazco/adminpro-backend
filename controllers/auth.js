@@ -1,6 +1,6 @@
 const Usuario = require("../models/usuario");
 const bcrypt = require('bcrypt');
-const {generarJWT} = require('../helpers/jwt');
+const { generarJWT } = require('../helpers/jwt');
 
 const { googleVerify } = require("../helpers/google-verify");
 
@@ -90,10 +90,40 @@ const googleSignIn = async(req, res)=>{
         });
 
     }catch(err){
-
         res.status(401).json({
             ok: false,
             msg: 'El token no es correcto.'
+        });
+    }
+}
+
+const renewToken = async (req, res)=>{
+
+    const uid = req.uid;
+
+    try{
+        const usuarioDB = await Usuario.findById(uid);
+
+        if(!usuarioDB){
+            return res.status(401).json({
+                ok: false,
+                msg: 'Usuario no registrado.'
+            });
+        }
+
+        // Generar el TOKEN - JWT
+        const token = await generarJWT(uid);
+
+        res.json({
+            ok: true,
+            token
+        });
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Erro al renovar un token. Por favor, contacte con un administrador.'
         });
     }
 
@@ -101,5 +131,6 @@ const googleSignIn = async(req, res)=>{
 
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renewToken
 }
