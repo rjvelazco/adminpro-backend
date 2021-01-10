@@ -16,7 +16,7 @@ const login = async(req, res)=>{
         if(!usuarioDB){
             return res.status(404).json({
                 ok: false,
-                msg: 'Email o passwords no valido' 
+                msg: 'Email o password no valido' 
             });
         }
 
@@ -25,7 +25,7 @@ const login = async(req, res)=>{
         if(!validarPassword){
             return res.status(400).json({
                 ok: false,
-                msg: 'Email o passwords no valido',
+                msg: 'Email o password no valido',
             });
         }
 
@@ -102,7 +102,7 @@ const renewToken = async (req, res)=>{
     const uid = req.uid;
 
     try{
-        const usuarioDB = await Usuario.findById(uid);
+        const usuarioDB = await Usuario.findById(uid, 'nombre email img role google');
 
         if(!usuarioDB){
             return res.status(401).json({
@@ -116,7 +116,8 @@ const renewToken = async (req, res)=>{
 
         res.json({
             ok: true,
-            token
+            token,
+            usuario: usuarioDB
         });
 
     }catch(err){

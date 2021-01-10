@@ -34,9 +34,17 @@ const getUsuarios = async(req, res)=>{
 
 const crearUsuario = async (req, res)=>{
 
-    const { password } = req.body;
+    const { password, email } = req.body;
 
     try{
+        const existeEmail = await Usuario.findOne({email});
+
+        if(existeEmail){
+            return res.status(400).json({
+                ok: false,
+                msg: 'El correo ya está registrado'
+            });
+        }
         const usuario = new Usuario(req.body);
 
         // Encriptar Password
@@ -55,9 +63,9 @@ const crearUsuario = async (req, res)=>{
         });
 
     } catch(err){
-        res.status(400).json({
+        res.status(500).json({
             ok: false,
-            err: err
+            msg: 'Error inesperado... revisar logs'
         });
     }
 }
@@ -84,12 +92,22 @@ const actualizarUsuario = async (req, res)=>{
             const existeEmail = await Usuario.findOne({email: email});
 
             if(existeEmail){
-                return res.status(404).json({
+                return res.status(400).json({
                     ok: false,
                     msg: 'El email ya existe'
                 })
             }
+        }
+        
+        // Validamos que el usuario no pueda actualizar su email
+        // Si ha creado su cuenta con Google
+        if(!usuarioDB.google){
             body.email = email;
+        } else if(usuarioDB.email !== email){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Usuarios de Google no pueden cambiar su correo'
+            })
         }
 
         // Actualizaciones
