@@ -77,7 +77,6 @@ const actualizarUsuario = async (req, res)=>{
     const { email, google, password, ...body } = req.body;
 
     const opc = { new: true, runValidators: true, context: 'query' };
-
     try{
         const usuarioDB = await Usuario.findById(id)
 
@@ -118,7 +117,6 @@ const actualizarUsuario = async (req, res)=>{
         });
 
     }catch(err){
-
         res.status(500).json({
             ok: false,
             msg: err
