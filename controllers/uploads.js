@@ -68,6 +68,8 @@ const fileUpload = async (req, res) =>{
                 msg: 'Archivo subido',
                 nombreArchivo,
                 imagen: pathImagen
+                // /app/uploads/medicos/4393f96b-711d-400c-8002-559a9ac75e5e.jpg
+                // /app/uploads/usuarios/8c42b27a-cb8a-4f82-954a-acf0912f6df2.jpeg"
             }); 
         });
     } else {
