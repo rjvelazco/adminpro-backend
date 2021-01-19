@@ -63,7 +63,33 @@ const getDocumentosColeccion = async(req, res)=>{
     });
 }
 
+const getTotalDocumentosColeccion = async (req, resp)=>{
+
+    try{
+        const [totalU, totalM, totalH] = await Promise.all([
+            Usuario.countDocuments(),
+            Medico.countDocuments(),
+            Hospital.countDocuments()
+        ]);
+    
+        return resp.json({
+            ok: true,
+            totalUsuarios: totalU,
+            totalMedicos: totalM,
+            totalHospitales: totalH
+        });
+    }catch(err){
+        console.log(err);
+        return resp.json({
+            ok: false,
+            msg: "Hable con el administrador."
+        })
+    }
+
+}
+
 module.exports ={
     getTodo,
-    getDocumentosColeccion
+    getDocumentosColeccion,
+    getTotalDocumentosColeccion
 }

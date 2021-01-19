@@ -8,12 +8,13 @@ const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 const { validarJWT } = require('../middlewares/validar-jwt');
 
-const { getHospitales, crearHospital, actualizarHospital, eliminarHospital} = require('../controllers/hospitales'); 
+const { getHospitales, getTodosHospitales, crearHospital, actualizarHospital, eliminarHospital} = require('../controllers/hospitales'); 
 
 const router = Router();
 
 
 router.get('/', validarJWT, getHospitales);
+router.get('/todos', validarJWT, getTodosHospitales);
 router.post('/', [
     validarJWT,
     check('nombre', 'El nombre del hosptal es necesario').not().isEmpty(),
