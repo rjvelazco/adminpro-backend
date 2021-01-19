@@ -7,11 +7,7 @@ const getMenuFrontEnd = (role = 'USER_ROLE') =>{
           url: '/',
           icon: 'mdi mdi-gauge',
           submenu: [
-            {titulo: 'Main', url: '/'},
-            {titulo: 'Graficas', url: 'grafica1'},
-            {titulo: 'ProgressBar', url: 'progress'},
-            {titulo: 'Promesas', url: 'promesas'},
-            {titulo: 'Rxjs', url: 'rxjs'},
+            {titulo: 'Pagina Principal', url: '/'},
           ]
         },
         {
