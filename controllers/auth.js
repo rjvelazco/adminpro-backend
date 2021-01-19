@@ -104,7 +104,7 @@ const renewToken = async (req, res)=>{
     const uid = req.uid;
 
     try{
-        const usuarioDB = await Usuario.findById(uid, 'nombre email img role google');
+        const usuarioDB = await Usuario.findById(uid, 'nombre email img role google tareas');
 
         if(!usuarioDB){
             return res.status(401).json({

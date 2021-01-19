@@ -33,6 +33,10 @@ const UsuarioSchema = new Schema({
     google:{
         type: Boolean,
         default: false
+    },
+    tareas: {
+        type: [String],
+        required: false
     }
 });
 
