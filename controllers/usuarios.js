@@ -17,7 +17,7 @@ const getUsuarios = async(req, res)=>{
 
     const [usuarios, total] = await Promise.all([
         Usuario
-            .find({}, 'nombre email role google img')
+            .find({}, 'nombre email role google img tareas')
             .skip( desde )
             .limit( limit ),
 
@@ -84,7 +84,7 @@ const actualizarUsuario = async (req, res)=>{
             return res.status(404).json({
                 ok: false,
                 msg: 'No existe un usuario con ese id'
-            })
+            });
         }
 
         if(email !== usuarioDB.email){
@@ -146,8 +146,107 @@ const deleteUsuario = async (req, res)=>{
             err
         })
     }
+}
 
+const getTareas = async(req, res)=>{
 
+    const id = req.uid;
+
+    try{
+        const usuarioDB = await  Usuario.findById(id, 'tareas')
+        
+        if(!usuarioDB){
+            return res.status(400).json({
+                ok: false,
+                msg: 'No existe un usuario con ese id'
+            });
+        }
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB.id,
+            tareas: usuarioDB.tareas
+        });
+    } catch(err){
+        console.log(err);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador.'
+        });
+    }
+}
+
+const agregarTarea = async(req, res)=>{
+
+    const id = req.uid;
+    const { tarea } = req.body;
+
+    try{
+        const usuarioDB = await Usuario.findById(id);
+
+        if(!usuarioDB){
+            return res.status(400).json({
+                ok: false,
+                msg: 'No existe un usuario con ese id'
+            });
+        }
+
+        usuarioDB.tareas.push(tarea);
+
+        await usuarioDB.save();
+
+        return res.json({
+            ok: true,
+            usuario: usuarioDB
+        })
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador.'
+        });
+    }
+}
+
+const eliminarTarea = async(req, res)=>{
+
+    const id = req.uid;
+    const tareaIndice = req.params.inidice;
+
+    if(isNaN(tareaIndice)){
+        return res.status(400).json({
+            ok: false,
+            msg: 'Debe enviar el indice de la tarea a eliminar'
+        })
+    }
+
+    try{
+        const usuarioDB = await Usuario.findById(id);
+
+        if(!usuarioDB){
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un usuario con ese id'
+            });
+        }
+
+        usuarioDB.tareas.splice(tareaIndice,1);
+
+        await usuarioDB.save();
+
+        return res.json({
+            ok: true,
+            msg: 'Tarea Eliminada'
+        })
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador.'
+        });
+    }
 }
 
 
@@ -156,5 +255,8 @@ module.exports = {
     getUsuarios,
     crearUsuario,
     actualizarUsuario,
-    deleteUsuario
+    deleteUsuario,
+    agregarTarea,
+    eliminarTarea,
+    getTareas
 }
