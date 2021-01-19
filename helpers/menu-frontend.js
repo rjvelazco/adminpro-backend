@@ -8,6 +8,10 @@ const getMenuFrontEnd = (role = 'USER_ROLE') =>{
           icon: 'mdi mdi-gauge',
           submenu: [
             {titulo: 'Pagina Principal', url: '/'},
+            {titulo: 'Graficas', url: 'grafica1'},
+            // {titulo: 'ProgressBar', url: 'progress'},
+            // {titulo: 'Promesas', url: 'promesas'},
+            // {titulo: 'Rxjs', url: 'rxjs'},
           ]
         },
         {
