@@ -66,7 +66,8 @@ const fileUpload = async (req, res) =>{
             return res.json({
                 ok: true,
                 msg: 'Archivo subido',
-                nombreArchivo
+                nombreArchivo,
+                imagen: pathImagen
             }); 
         });
     } else {
