@@ -47,8 +47,6 @@ const fileUpload = async (req, res) =>{
     // Path para guardar la imagen
     const pathImagen = path.resolve(__dirname, `../uploads/${tipo}/${nombreArchivo}`);
 
-    console.log(pathImagen);
-
     if(await exiteId(tipo, id)){
         // Mover la imagen
         file.mv(`${pathImagen}`, async (err) =>{
@@ -56,21 +54,23 @@ const fileUpload = async (req, res) =>{
                 console.log(err);
                 return res.status(500).json({
                     ok: false,
-                    msg: 'Error al mover la imagen.'
+                    msg: 'Error al mover la imagen.',
+                    path: pathImagen,
+                    err
                 })
             };
     
             // Actualizar base de datos
             await actualizarImagen(tipo, id, nombreArchivo)
             
-            res.json({
+            return res.json({
                 ok: true,
                 msg: 'Archivo subido',
                 nombreArchivo
             }); 
         });
     } else {
-        res.status(400).json({
+        return res.status(400).json({
             ok: false,
             msg: `No se ha encontrado el id ingresado.`
         });
