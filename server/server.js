@@ -9,8 +9,6 @@ const path = require('path');
 // Crear el servidor de express
 const app = express();
 
-app.options('*', cors())
-
 // Configurar CORS;
 app.use(cors());
 
