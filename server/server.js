@@ -6,22 +6,22 @@ const cors = require('cors');
 
 const path = require('path');
 
-// Crear el servidor de express
+// Create express server
 const app = express();
 
-// Configurar CORS;
+// Configure CORS
 app.use(cors());
 
-// Lectura y parseo del body
+// Read and parse the body
 app.use(express.json());
 
-// Conexion a la base de datos.
+// Database connection
 dbConnection();
 
-// Directorio Publico
+// Public directory
 app.use(express.static(path.resolve(__dirname, '../public')));
 
-// Ruta usuario
+// User route
 app.use('/api/usuarios', require('../routes/usuarios'));
 app.use('/api/hospitales', require('../routes/hospitales'));
 app.use('/api/medicos', require('../routes/medicos'));
@@ -29,12 +29,12 @@ app.use('/api/login', require('../routes/auth'));
 app.use('/api/todo', require('../routes/busquedas'));
 app.use('/api/upload', require('../routes/uploads'));
 
-// Lo ultimo
+// Middleware to serve the frontend
 app.get('*', (req, res)=>{
     res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 
-
 app.listen(process.env.PORT, ()=>{
     console.log('Servidor online: ', process.env.PORT);
 });
+
